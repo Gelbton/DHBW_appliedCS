@@ -31,7 +31,6 @@ void freeLastElement(LinList_p junk) // hilfsmethode
     {
         prevPointer = currentPointer;
         currentPointer = currentPointer->next;
-
     }
     if (prevPointer)
     {
@@ -82,6 +81,51 @@ LinList_p LinListExtractFirst(LinList_p anchor)
 
     return tempPointer;
 }
+
+LinList_p LinListFind(LinList_p list, char *vergleiche)
+{
+    for (LinListCell *i = list; i; i = i->next)
+    {
+        if (strcmp(vergleiche, i->payload) == 0)
+        {
+            return i;
+        }
+    }
+    return NULL;
+}
+
+void LinListPrint(LinList_p list)
+{
+    if (!list)
+    {
+        return;
+    }
+    printf("%s", list->payload);
+    LinListPrint(list->next);
+}
+LinList_p LinListRevert(LinList_p anchor)
+{
+    if (anchor == NULL || anchor->next == NULL)
+    {
+        return anchor;
+    }
+
+    LinList_p reversed = LinListRevert(anchor->next);
+    anchor->next->next = anchor;
+    anchor->next = NULL;
+
+    return reversed;
+}
+void LinkedListPrintReverse(LinList_p list)
+{
+    if (!list)
+    {
+        return;
+    }
+    LinkedListPrintReverse(list->next);
+    printf("%s", list->payload);
+}
+
 int main(int argc, char *argv[])
 {
     FILE *in = stdin;
@@ -107,6 +151,10 @@ int main(int argc, char *argv[])
 
     while (fgets(input, sizeof(input), in))
     {
+        if (LinListFind(anchor, input))
+        {
+            continue; // Duplikate ueberspringen
+        }
         anchor = LinListInsertFirst(anchor, LinListAllocCell(input));
     }
 
@@ -114,12 +162,7 @@ int main(int argc, char *argv[])
     {
         fclose(in);
     }
-    LinList_p current = anchor;
-    while (current)
-    {
-        printf("%s", current->payload);
-        current = current->next;
-    }
+    LinkedListPrintReverse(anchor);
 
     exit(EXIT_SUCCESS);
 }
