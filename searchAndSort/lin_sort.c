@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 void insertionSort(int* arr, int len)
 {
     long long time1, time2;
-    time1 = GetUSecClock();
     int i, j, key;
     for (i = 1; i < len; i++)
     {
@@ -22,11 +22,8 @@ void insertionSort(int* arr, int len)
         }
         arr[j + 1] = key;
     }
+    
 }
-
-
-
-
 
 int printList(int* arr, int len)
 {
@@ -40,10 +37,13 @@ int printList(int* arr, int len)
 
 int main()
 {
+    long long time1, time2;
+    time1 = clock();
     int test[] = {4, 13, 12, 1, 55, 293, 3, 187, 15};
     int len = 9;
     insertionSort(test, len);
-    printList(test, len);
-
+    time2 = clock();
+    int duration = time2 - time1;
+    printf("%d \n", duration);
     return 0;
 }
